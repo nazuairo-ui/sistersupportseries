@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="accueil" class="hero-section reveal">
+    <div class="hero-bg-overlay"></div>
+
+    <div class="hero-content">
+        <h1 class="hero-title">
+            Bertahan atau<br>Lepaskan?
+        </h1>
+
+        <p class="hero-subtitle">
+            Untuk Muslimah yang <strong>Keraguan kala Jatuh Hati</strong>
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/daftar" class="btn-solid">
+                Daftar
+            </a>
+            <a href="#details" class="btn-outline">
+                Detail Acara
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="details" class="clean-details reveal delay-1">
+    <div style="margin-bottom: 5rem;">
+        <span class="section-label">Waktu Kegiatan</span>
+        <h2 class="section-heading">Sister Support Series | Vol 1</h2>
+        <div style="max-width: 48rem; font-size: 1.125rem; font-weight: 300; opacity: 0.9; line-height: 1.8;">
+            <p>Nasihat untuk muslimah yang sedang jatuh hati. Menguatkan kembali muslimah untuk bisa menjaga izzah dan
+                iffahnya.</p>
+            <p style="margin-top: 1rem;">Terbagi dalam tiga sesi mendalam, melalui tiga perspektif ahli. Setiap pukul
+                19.30-21.00.</p>
+        </div>
+    </div>
+
+    <div class="agenda-grid">
+        <div class="agenda-item">
+            <div style="font-size: 2.5rem; color: var(--text-rust); margin-bottom: 1.5rem; font-weight: 600;">
+                12 <span style="font-size: 1rem; font-weight: 400; text-transform: uppercase;">Des</span>
+            </div>
+            <h3>Kak Agnie (@helloagnie)</h3>
+            <p>"Aku Tahu Ini Membingungkan, Tapi Mengapa Aku Masih Bertahan?" (Relationship Coach dan Penulis Buku)</p>
+        </div>
+        <div class="agenda-item">
+            <div style="font-size: 2.5rem; color: var(--text-rust); margin-bottom: 1.5rem; font-weight: 600;">
+                13 <span style="font-size: 1rem; font-weight: 400; text-transform: uppercase;">Des</span>
+            </div>
+            <h3>Kak Indzar Muhammad</h3>
+            <p>"Hal yang Perempuan Sering Salah Pahami tentang Sikap Laki-Laki" (Konselor)</p>
+        </div>
+        <div class="agenda-item">
+            <div style="font-size: 2.5rem; color: var(--text-rust); margin-bottom: 1.5rem; font-weight: 600;">
+                19 <span style="font-size: 1rem; font-weight: 400; text-transform: uppercase;">Des</span>
+            </div>
+            <h3>Kak Annisa Nafiya</h3>
+            <p>"Setelah Salah Menaruh Hati, Ke Mana Aku Harus Melangkah?" (Penulis Buku)</p>
+        </div>
+    </div>
+</section>
+
+<section class="sessions-section reveal delay-1">
+    <div style="margin-bottom: 4rem;">
+        <span class="section-label">Investasi Ilmu</span>
+        <h2 class="section-heading">Daftar Sekarang! Kuota terbatas</h2>
+    </div>
+
+    <div class="sessions-grid">
+        <!-- Fasilitas Box -->
+        <div>
+            <h3 style="font-size: 1.5rem; font-weight: 300; margin-bottom: 2rem;">Benefit</h3>
+            <ul
+                style="list-style: none; padding: 0; font-weight: 300; opacity: 0.9; line-height: 1.8; margin-bottom: 2rem;">
+                <li style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: flex-start;">
+                    <span
+                        style="display: block; width: 6px; height: 6px; background-color: var(--text-rust); border-radius: 50%; margin-top: 10px;"></span>
+                    Akses penuh untuk semua sesi (terdapat versi rekaman bagi yang berhalangan hadir di zoom)
+                </li>
+                <li style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: flex-start;">
+                    <span
+                        style="display: block; width: 6px; height: 6px; background-color: var(--text-rust); border-radius: 50%; margin-top: 10px;"></span>
+                    Free Join Komunitas "Her Wisdom" untuk networking sesama muslimah
+                </li>
+                <li style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <span
+                        style="display: block; width: 6px; height: 6px; background-color: var(--text-rust); border-radius: 50%; margin-top: 10px;"></span>
+                    Terdapat lembar refleksi / penugasan pribadi di setiap sesi melalui grup WhatsApp
+                </li>
+            </ul>
+        </div>
+
+        <!-- Harga Box Dinamis -->
+        <div class="session-card">
+            <h3 style="font-size: 1.25rem; font-weight: 400; margin: 0;">Investasi Ilmu</h3>
+
+            <div class="price-display">
+                Rp {{ "{:,.0f}".format(harga).replace(',', '.') }}
+            </div>
+
+            <p style="font-weight: 500; margin-bottom: 1rem;">
+                Tier aktif: {{ paket }}
+                {% if sisa_paket > 0 %}
+                <br><span style="font-weight: 400; opacity: 0.7; font-size: 0.9rem;">(Sisa {{ sisa_paket }} slot harga
+                    ini)</span>
+                {% endif %}
+            </p>
+
+            <a href="/daftar" class="btn-solid"
+                style="background-color: var(--text-rust); color: var(--bg-cream); display: inline-block; margin-top: 1rem;">
+                Daftar Sekarang
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sister Support Series - Vol. 1 | Her Wisdom{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Poppins:ital,wght@1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=7">
+</head>
+
+<body>
+    <div class="editorial-shell">
+        <!-- Navbar -->
+        <header class="navbar-container">
+            <nav class="nav-pill-menu" id="navbar-container">
+                <a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+                <a href="#details" class=>Details</a>
+                <a href="/daftar" class="{% if request.path == '/daftar' %}active{% endif %}">Daftar</a>
+
+                {% if session.get('admin_logged_in') %}
+                <a href="/admin">Admin</a>
+                <a href="/logout">Logout</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer Aesthetic -->
+        <footer
+            style="background-color: #AF4B31; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; padding: 4rem 2rem; margin: 4rem 1rem 0; color: #F1EBE1; text-align: center; position: relative; overflow: hidden;">
+            <div style="max-width: 1000px; margin: 0 auto; position: relative; z-index: 10;">
+
+                <!-- Title -->
+                <h3 style="font-size: 1.75rem; font-weight: 500; margin-top: 0; margin-bottom: 1.5rem;">
+                    Informasi & Narahubung Resmi
+                </h3>
+
+                <!-- Description -->
+                <p
+                    style="font-weight: 300; font-size: 1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 3rem; line-height: 1.6;">
+                    Untuk pertanyaan seputar tiket dan rangkaian acara <em style="opacity: 0.8;">Sister
+                        Support Series - Vol. 1</em> silakan hubungi kontak di bawah ini.
+                </p>
+
+                <!-- Contact Chips Grid -->
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
+                    <a href="https://wa.me/62895622999781" target="_blank" rel="noopener"
+                        style="border: 1px solid rgba(241,235,225,0.3); color: #F1EBE1; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 500; transition: all 0.3s; background: rgba(255,255,255,0.05);">
+                        Naila (Admin - Click Here)
+                    </a>
+                    <a href="https://instagram.com/helloagnie" target="_blank" rel="noopener"
+                        style="border: 1px solid rgba(241,235,225,0.3); color: #F1EBE1; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 500; transition: all 0.3s; background: rgba(255,255,255,0.05);">
+                        Kak Agnie: @helloagnie
+                    </a>
+                    <a href="https://instagram.com/ukhticaaa_" target="_blank" rel="noopener"
+                        style="border: 1px solid rgba(241,235,225,0.3); color: #F1EBE1; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 500; transition: all 0.3s; background: rgba(255,255,255,0.05);">
+                        Kak Annisa: @ukhticaaa_
+                    </a>
+                    <span
+                        style="border: 1px solid rgba(241,235,225,0.3); color: #F1EBE1; padding: 0.75rem 1.5rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 500; background: rgba(255,255,255,0.05);">
+                        Konselor: @heyindzar
+                    </span>
+                </div>
+
+                <div
+                    style="border-top: 1px solid rgba(241,235,225,0.2); padding-top: 2rem; font-size: 0.75rem; font-weight: 300; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7;">
+                    ©2026 neilamair | Sister Supports Series
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Script animasi reveal -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,282 @@
+:root {
+    --bg-cream: #F1EBE1;
+    --text-rust: #AF4B31;
+    --text-rust-dark: #8a3924;
+}
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-rust);
+    overflow-x: hidden;
+}
+
+/* =========================================
+   1. NAVBAR (TUBE LIGHT EFFECT)
+========================================= */
+.editorial-shell {
+    position: relative;
+}
+
+.navbar-container {
+    position: fixed;
+    top: 1.5rem;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    /* Biar area selain pil bisa diklik tembus */
+}
+
+.nav-pill-menu {
+    pointer-events: auto;
+    background-color: rgba(241, 235, 225, 0.8);
+    border: 1px solid rgba(175, 75, 49, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.25rem 0.25rem;
+    border-radius: 9999px;
+    display: flex;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.nav-pill-menu a {
+    text-decoration: none;
+    color: rgba(175, 75, 49, 0.7);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.7rem 1.5rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+}
+
+.nav-pill-menu a:hover,
+.nav-pill-menu a.active {
+    color: var(--text-rust);
+}
+
+.nav-pill-menu a.active {
+    background-color: rgba(175, 75, 49, 0.1);
+}
+
+/* =========================================
+   2. HERO SECTION
+========================================= */
+.hero-section {
+    position: relative;
+    padding: 12rem 2rem 8rem;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Latar belakang gradient & blur */
+.hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, #AF4B31, #9e432c, #8a3924);
+    z-index: 0;
+}
+
+/* Aksen Gumpalan di Tengah */
+.hero-bg-overlay::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, #f48263 0%, rgba(175, 75, 49, 0) 70%);
+    filter: blur(60px);
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    color: var(--bg-cream);
+    max-width: 900px;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-solid,
+.btn-outline {
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-solid {
+    background-color: var(--bg-cream);
+    color: var(--text-rust);
+}
+
+.btn-solid:hover {
+    background-color: #fff;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--bg-cream);
+    color: var(--bg-cream);
+}
+
+.btn-outline:hover {
+    background-color: var(--bg-cream);
+    color: var(--text-rust);
+}
+
+/* =========================================
+   3. CLEAN DETAILS (THE TURNING POINT)
+========================================= */
+.clean-details {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+}
+
+.section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+    display: inline-block;
+    border: 1px solid var(--text-rust);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+}
+
+.section-heading {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+}
+
+.agenda-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+}
+
+.agenda-item h3 {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.agenda-item p {
+    font-weight: 300;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+/* =========================================
+   4. AESTHETIC PRICING (SESSIONS)
+========================================= */
+.sessions-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    border-top: 1px solid rgba(175, 75, 49, 0.2);
+}
+
+.sessions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .sessions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.session-card {
+    background: rgba(175, 75, 49, 0.05);
+    border: 1px solid rgba(175, 75, 49, 0.1);
+    padding: 3rem;
+    border-radius: 1rem;
+}
+
+.price-display {
+    font-size: 3rem;
+    font-weight: 600;
+    margin: 1.5rem 0;
+}
+
+.price-display span {
+    font-size: 1rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+}
+
+/* =========================================
+   5. REVEAL ANIMATIONS
+========================================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-1 {
+    transition-delay: 0.2s;
+}
+
+.delay-2 {
+    transition-delay: 0.4s;
+}

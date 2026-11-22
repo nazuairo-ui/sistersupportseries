@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sister Support Series - Vol. 1 | Her Wisdom{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Poppins:ital,wght@1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=7">
+</head>
+
+<body>
+    <div class="editorial-shell">
+        <!-- Navbar -->
+        <header class="navbar-container">
+            <nav class="nav-pill-menu" id="navbar-container">
+                <a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+                <a href="#details" class=>Details</a>
+                <a href="/daftar" class="{% if request.path == '/daftar' %}active{% endif %}">Daftar</a>
+
+                {% if session.get('admin_logged_in') %}
+                <a href="/admin">Admin</a>
+                <a href="/logout">Logout</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Script animasi reveal -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            });
+        </script>
+</body>
+
+</html>

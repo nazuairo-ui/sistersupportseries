@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Admin — Her Wisdom{% endblock %}
+
+{% block content %}
+<!-- Pindahkan warna flash message ke CSS class agar VS Code tidak error -->
+<style>
+    .flash-banner {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        font-weight: 500;
+    }
+
+    .flash-banner.error {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    .flash-banner.success {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+</style>
+
+<section class="admin-container" style="max-width: 1200px; margin: 0 auto; padding: 8rem 2rem 6rem;">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash-banner {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="admin-header reveal"
+        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
+        <div class="admin-title-group">
+            <h1 class="admin-title"
+                style="font-size: 2.5rem; font-weight: 300; color: var(--text-rust); margin: 0 0 0.5rem;">Dashboard
+                Admin</h1>
+            <span class="live-badge"
+                style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 4px 10px; border-radius: 99px;">
+                <span class="live-dot"
+                    style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%;"></span> LIVE
+            </span>
+        </div>
+
+        <div class="admin-top-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="/scan" class="btn-solid"
+                style="background-color: var(--text-rust); color: var(--bg-cream); padding: 0.6rem 1.2rem; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; font-weight: 500;">Scan
+                QR</a>
+            <a href="/admin/export" class="btn-outline"
+                style="border: 1px solid var(--text-rust); color: var(--text-rust); padding: 0.6rem 1.2rem; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; font-weight: 500;">Export
+                CSV</a>
+
+            <form action="/admin/reset-hadir" method="POST"
+                data-confirm="Reset semua status kehadiran peserta menjadi Belum Hadir?" style="display:inline;">
+                <button type="submit" class="btn-outline"
+                    style="border: 1px solid #f59e0b; color: #f59e0b; padding: 0.6rem 1.2rem; font-size: 0.8rem; border-radius: 9999px; background: transparent; cursor: pointer; font-weight: 500;">Reset
+                    Semua</button>
+            </form>
+
+            <form action="/admin/delete-all" method="POST"
+                data-confirm="PERINGATAN: Hapus seluruh data peserta secara permanen?" style="display:inline;">
+                <button type="submit" class="btn-outline"
+                    style="border: 1px solid #ef4444; color: #ef4444; padding: 0.6rem 1.2rem; font-size: 0.8rem; border-radius: 9999px; background: transparent; cursor: pointer; font-weight: 500;">Hapus
+                    Semua Peserta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Statistik Card -->
+    <div class="stats-grid reveal delay-1"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
+
+        <div class="stat-card"
+            style="background: rgba(175, 75, 49, 0.05); border: 1px solid rgba(175, 75, 49, 0.1); padding: 2rem; border-radius: 12px; text-align: center;">
+            <div class="stat-icon"
+                style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; margin-bottom: 1rem;">
+                01 / Total</div>
+            <div class="stat-number"
+                style="font-size: 3rem; font-weight: 800; color: var(--text-rust); line-height: 1;">{{ total_terdaftar
+                }}</div>
+            <div class="stat-label" style="font-weight: 500; margin-top: 1rem;">Total Terdaftar</div>
+        </div>
+
+        <div class="stat-card"
+            style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1); padding: 2rem; border-radius: 12px; text-align: center;">
+            <div class="stat-icon"
+                style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; color: #15803d; margin-bottom: 1rem;">
+                02 / Check-In</div>
+            <div class="stat-number" style="font-size: 3rem; font-weight: 800; color: #16a34a; line-height: 1;">{{
+                sudah_hadir }}</div>
+            <div class="stat-label" style="font-weight: 500; margin-top: 1rem; color: #15803d;">Sudah Hadir</div>
+        </div>
+
+        <div class="stat-card"
+            style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.1); padding: 2rem; border-radius: 12px; text-align: center;">
+            <div class="stat-icon"
+                style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; color: #b45309; margin-bottom: 1rem;">
+                03 / Waiting</div>
+            <div class="stat-number" style="font-size: 3rem; font-weight: 800; color: #d97706; line-height: 1;">{{
+                belum_hadir }}</div>
+            <div class="stat-label" style="font-weight: 500; margin-top: 1rem; color: #b45309;">Belum Hadir</div>
+        </div>
+
+        <div class="stat-card"
+            style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); padding: 2rem; border-radius: 12px; text-align: center;">
+            <div class="stat-icon"
+                style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; color: #1d4ed8; margin-bottom: 1rem;">
+                04 / Capacity</div>
+            <div class="stat-number" style="font-size: 3rem; font-weight: 800; color: #2563eb; line-height: 1;">{{
+                sisa_kuota }}</div>
+            <div class="stat-label" style="font-weight: 500; margin-top: 1rem; color: #1d4ed8;">Sisa Kuota</div>
+        </div>
+
+    </div>
+
+    <!-- Panel Pengaturan Kuota -->
+    <div class="admin-panel reveal delay-2"
+        style="background: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);">
+        <div class="panel-title"
+            style="font-size: 1.25rem; font-weight: 500; margin-bottom: 1.5rem; color: var(--text-rust);">Pengaturan
+            Kuota Pendaftaran</div>
+
+        <form action="/admin/kuota" method="POST" class="quota-controls"
+            style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="quota-step-btn" onclick="adjustQuota(-10)"
+                style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; cursor: pointer;">-10</button>
+            <button type="button" class="quota-step-btn" onclick="adjustQuota(-1)"
+                style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; cursor: pointer;">-1</button>
+            <input type="number" id="kuota_input" name="kuota" value="{{ kuota_maksimal }}" class="quota-input" min="0"
+                required
+                style="width: 80px; padding: 0.6rem; text-align: center; border: 1px solid var(--text-rust); border-radius: 6px; font-weight: bold;">
+            <button type="button" class="quota-step-btn" onclick="adjustQuota(1)"
+                style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; cursor: pointer;">+1</button>
+            <button type="button" class="quota-step-btn" onclick="adjustQuota(10)"
+                style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; cursor: pointer;">+10</button>
+            <button type="submit" class="btn-solid"
+                style="background: var(--text-rust); color: white; padding: 0.6rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; margin-left: 10px;">Simpan</button>
+
+            <span class="quota-info-text" style="font-size: 0.9rem; opacity: 0.8; margin-left: 1rem;">
+                Kuota saat ini: <strong>{{ kuota_maksimal }}</strong> (terisi {{ total_terdaftar }})
+            </span>
+        </form>
+    </div>
+
+    <!-- Panel Data Peserta -->
+    <div class="admin-panel reveal delay-3"
+        style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div class="panel-title" style="font-size: 1.25rem; font-weight: 500; color: var(--text-rust);">Data Peserta
+            </div>
+            <div class="table-search-bar">
+                <input type="text" id="searchInput" oninput="filterTable()" class="form-input"
+                    placeholder="Cari nama, email, telp, domisili..."
+                    style="padding: 0.6rem 1rem; border: 1px solid #ccc; border-radius: 8px; width: 300px; max-width: 100%;">
+            </div>
+        </div>
+
+        <div class="table-responsive" style="overflow-x: auto; width: 100%;">
+            <table class="admin-table" id="pesertaTable"
+                style="width: 100%; border-collapse: collapse; min-width: 900px;">
+                <thead style="background: rgba(175, 75, 49, 0.05); border-bottom: 2px solid rgba(175, 75, 49, 0.1);">
+                    <tr>
+                        <th
+                            style="padding: 1rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            No</th>
+                        <th
+                            style="padding: 1rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Nama Lengkap</th>
+                        <th
+                            style="padding: 1rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            No Telp</th>
+                        <th
+                            style="padding: 1rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Email</th>
+                        <th
+                            style="padding: 1rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Domisili</th>
+                        <th
+                            style="padding: 1rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Tier</th>
+                        <th
+                            style="padding: 1rem; text-align: center; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Bukti TF</th>
+                        <th
+                            style="padding: 1rem; text-align: center; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Status</th>
+                        <th
+                            style="padding: 1rem; text-align: center; font-size: 0.85rem; text-transform: uppercase; color: var(--text-rust);">
+                            Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in peserta_list %}
+                    <tr data-search="{{ [p.nama, p.email, p.no_telp, p.domisili]|select|join(' ')|lower }}"
+                        style="border-bottom: 1px solid #f3f4f6;">
+                        <td style="padding: 1rem; font-size: 0.95rem;">{{ loop.index }}</td>
+                        <td style="padding: 1rem; font-size: 0.95rem;"><strong>{{ p.nama }}</strong></td>
+                        <td style="padding: 1rem; font-size: 0.95rem;">{{ p.no_telp }}</td>
+                        <td style="padding: 1rem; font-size: 0.95rem;" title="{{ p.email }}">{{ p.email }}</td>
+                        <td style="padding: 1rem; font-size: 0.95rem;">{{ p.domisili or '-' }}</td>
+                        <td style="padding: 1rem; font-size: 0.85rem;">
+                            <span
+                                style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 500; border: 1px solid #e2e8f0;">{{
+                                p.paket }}</span>
+                        </td>
+                        <td style="padding: 1rem; text-align: center; font-size: 0.95rem;">
+                            {% if p.bukti_tf_url %}
+                            <a href="{{ p.bukti_tf_url }}" target="_blank" rel="noopener"
+                                style="color: var(--text-rust); text-decoration: underline; font-weight: 500;">Lihat</a>
+                            {% else %}
+                            <span style="color: #9ca3af;">-</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            {% if p.status_hadir %}
+                            <span
+                                style="background: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 99px; font-size: 0.8rem; font-weight: 600;">Hadir</span>
+                            <div style="font-size: 0.7rem; color: #6b7280; margin-top: 4px;">{{ p.waktu_scan or '' }}
+                            </div>
+                            {% else %}
+                            <span
+                                style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 99px; font-size: 0.8rem; font-weight: 600;">Belum</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <div style="display: flex; gap: 8px; justify-content: center;">
+                                {% if p.status_hadir %}
+                                <form action="{{ url_for('batal_hadir', peserta_id=p.id) }}" method="POST"
+                                    data-confirm="Batalkan status hadir {{ p.nama }}?">
+                                    <button type="submit"
+                                        style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: 0.2s;">Batal
+                                        Hadir</button>
+                                </form>
+                                {% else %}
+                                <form action="{{ url_for('hadirkan_manual', peserta_id=p.id) }}" method="POST"
+                                    data-confirm="Tandai {{ p.nama }} hadir secara manual?">
+                                    <button type="submit"
+                                        style="background: transparent; border: 1px solid #10b981; color: #10b981; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: 0.2s;">Hadirkan</button>
+                                </form>
+                                {% endif %}
+
+                                <form action="{{ url_for('delete_peserta', peserta_id=p.id) }}" method="POST"
+                                    data-confirm="Hapus peserta {{ p.nama }}? Data tidak bisa dikembalikan.">
+                                    <button type="submit"
+                                        style="background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: 0.2s;">Hapus</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 3rem; color: #6b7280;">
+                            Belum ada data peserta yang mendaftar.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Fungsi untuk menambah/mengurangi kuota
+    function adjustQuota(amount) {
+        const input = document.getElementById('kuota_input');
+        let current = parseInt(input.value) || 0;
+        let nextVal = current + amount;
+        if (nextVal < 0) nextVal = 0;
+        input.value = nextVal;
+    }
+
+    // Fungsi pencarian di tabel
+    function filterTable() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        document.querySelectorAll('#pesertaTable tbody tr[data-search]').forEach(row => {
+            row.style.display = row.dataset.search.includes(query) ? '' : 'none';
+        });
+    }
+
+    // Konfirmasi sebelum mengeksekusi form (Hapus/Reset/Hadirkan)
+    document.addEventListener('submit', function (e) {
+        const pesan = e.target.dataset ? e.target.dataset.confirm : null;
+        if (pesan && !window.confirm(pesan)) {
+            e.preventDefault();
+        }
+    });
+</script>
+{% endblock %}

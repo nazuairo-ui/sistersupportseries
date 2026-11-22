@@ -1,0 +1,159 @@
+{% extends "basey.html" %}
+{% block title %}Pendaftaran Peserta — Her Wisdom{% endblock %}
+
+{% block content %}
+<section class="register-wrapper" style="padding: 10rem 2rem 6rem; background-color: var(--bg-cream);">
+    <div class="register-card reveal"
+        style="max-width: 700px; margin: 0 auto; background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(175, 75, 49, 0.1);">
+
+        <h1 class="form-title"
+            style="font-size: 2.5rem; font-weight: 300; color: var(--text-rust); margin-bottom: 0.5rem; text-align: center;">
+            Formulir Pendaftaran</h1>
+        <p class="form-subtitle" style="text-align: center; opacity: 0.7; margin-bottom: 2rem;">Sister Support Series -
+            Vol. 1 | "Bertahan atau Lepaskan?"</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}" role="alert"
+            style="background-color: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endwith %}
+
+        <form id="daftar-form" data-max-mb="{{ max_mb }}" action="{{ url_for('daftar') }}" method="POST"
+            enctype="multipart/form-data">
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="nama"
+                    style="display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem;">Nama
+                    Lengkap</label>
+                <input type="text" id="nama" name="nama" class="form-input" placeholder="Cont. Aisha Shaliha"
+                    value="{{ form.get('nama', '') }}" minlength="2" maxlength="100" required
+                    style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="email"
+                    style="display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem;">Alamat Email
+                    Aktif</label>
+                <input type="email" id="email" name="email" class="form-input"
+                    placeholder="nama@email.com/@gmail.com/@hosting.com" value="{{ form.get('email', '') }}"
+                    maxlength="254" required
+                    style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+            </div>
+
+            <div class="form-row"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="form-group">
+                    <label class="form-label" for="no_telp"
+                        style="display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem;">No.
+                        WhatsApp</label>
+                    <input type="tel" id="no_telp" name="no_telp" class="form-input" placeholder="0812xxxxxxxx"
+                        value="{{ form.get('no_telp', '') }}" inputmode="tel" pattern="[0-9+\s\-]{8,20}" required
+                        style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="umur"
+                        style="display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem;">Umur</label>
+                    <input type="number" id="umur" name="umur" class="form-input" placeholder="20" min="10" max="99"
+                        value="{{ form.get('umur', '') }}" required
+                        style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label class="form-label" for="domisili"
+                    style="display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem;">Domisili
+                    (Acara tetap online melalui Zoom)</label>
+                <input type="text" id="domisili" name="domisili" class="form-input" placeholder="Contoh: Bogor"
+                    value="{{ form.get('domisili', '') }}" minlength="2" maxlength="100" required
+                    style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+            </div>
+
+            <!-- Bagian Pembayaran -->
+            <div class="payment-box"
+                style="background-color: var(--bg-cream); border: 1px dashed var(--text-rust); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; text-align: center;">
+                <div class="payment-box-title"
+                    style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-rust); margin-bottom: 1rem;">
+                    Informasi Pembayaran
+                </div>
+
+                <div class="payment-rek" style="font-size: 1.1rem; margin-bottom: 1.5rem;">
+                    BSI (Bank Syariah Indonesia)<br>
+                    <span class="payment-rek-number"
+                        style="font-size: 1.5rem; font-weight: 700; letter-spacing: 2px;">7132562126</span><br>
+                    A.n Annisa Nafiya
+                </div>
+
+                <div style="border-top: 1px solid rgba(175, 75, 49, 0.2); padding-top: 1.5rem;">
+                    <span style="display: block; font-size: 0.9rem; margin-bottom: 0.5rem;">Total Pembayaran Anda Saat
+                        Ini:</span>
+                    <span style="display: block; font-size: 2.5rem; font-weight: 800; color: var(--text-rust);">
+                        Rp {{ "{:,.0f}".format(harga_aktif).replace(',', '.') }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2.5rem;">
+                <label class="form-label" for="bukti_tf"
+                    style="display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem;">Unggah Bukti
+                    Transfer</label>
+                <input type="file" id="bukti_tf" name="bukti_tf" class="form-input"
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required
+                    style="width: 100%; padding: 0.8rem 1rem; border: 1px dashed #ccc; border-radius: 8px; background: #fafafa;">
+                <small class="form-hint" style="display: block; margin-top: 0.5rem; font-size: 0.8rem; color: #666;">
+                    Format JPG, JPEG, PNG, atau WEBP. Maksimal {{ max_mb }} MB.
+                </small>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-solid"
+                style="width: 100%; padding: 1rem; border: none; cursor: pointer; text-align: center; display: block; font-size: 1rem;">
+                Kirim Pendaftaran
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const MAX_MB = Number(document.getElementById('daftar-form').dataset.maxMb);
+    const MAX_BYTES = MAX_MB * 1024 * 1024;
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const fileInput = document.getElementById('bukti_tf');
+        const form = document.getElementById('daftar-form');
+        const btn = document.getElementById('submit-btn');
+
+        // Validasi file langsung saat dipilih
+        fileInput.addEventListener('change', () => {
+            fileInput.setCustomValidity('');
+            const file = fileInput.files[0];
+            if (!file) return;
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                fileInput.setCustomValidity('File harus berformat JPG, JPEG, PNG, atau WEBP.');
+            } else if (file.size > MAX_BYTES) {
+                fileInput.setCustomValidity('Ukuran file maksimal ' + MAX_MB + ' MB.');
+            }
+            fileInput.reportValidity();
+        });
+
+        // Cegah submit ganda (handler ini hanya jalan jika form sudah valid)
+        form.addEventListener('submit', () => {
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            btn.textContent = 'Memproses...';
+        });
+
+        // Tombol aktif lagi jika user menekan tombol "back"
+        window.addEventListener('pageshow', () => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.textContent = 'Selesaikan Pendaftaran';
+        });
+    });
+</script>
+{% endblock %}
